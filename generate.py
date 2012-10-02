@@ -30,23 +30,8 @@ args2 = ['monav-preprocessor', '-dro="bike"', '-t=4', '--verbose', '--settings="
 # third pass - process pedestrian routing data & delete temporary files
 args3 = ['monav-preprocessor', '-dro="pedestrian"', '-t=4', '--verbose', '--settings="base.ini"', '--input="%s"' % inputFile, '--output="%s"' % outputFolder, '--name="%s"' % name, '--profile="foot"', '-dd']
 
-a = ""
-for i in args1:
-	a+=(i + " ")
-#print a
-
-print _currentFolder
-#env = {'PWD':_currentFolder}
-#subprocess.call(args1, env=env)
-#subprocess.Popen(args2, env=env)
-#subprocess.Popen(args3, env=env)
-
+# convert the arguments to whitespace delimited strings and run them
 os.system(reduce(lambda x, y: x+" "+y, args1))
 os.system(reduce(lambda x, y: x+" "+y, args2))
 os.system(reduce(lambda x, y: x+" "+y, args3))
-
-
-print "test"
-#os.system('monav-preprocessor -di -dro="car" -da=unicode_tournament_trie -t=4 --verbose --settings="base.ini" --input="czech_republic.osm.pbf" --output="cz_20121002" --name="Czech_Republic" --profile="motorcar"')
-
 print('Monav data processing done')
