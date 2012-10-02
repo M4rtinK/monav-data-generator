@@ -5,9 +5,12 @@ import sys
 import subprocess
 import os
 
+THREADS=4
+
 inputFile = sys.argv[1]
 outputFolder = sys.argv[2]
 name = sys.argv[3]
+
 
 # get current folder
 _currentFolder = os.path.dirname(os.path.abspath(__file__))
@@ -24,11 +27,11 @@ if not os.path.exists(outputFolder):
 # create car, bike and foot routing data
 
 # first pass - import data, create address info & generate car routing data
-args1 = ['monav-preprocessor', '-di', '-dro="car"', '-da=unicode_tournament_trie', '-t=4', '--verbose', '--settings="base.ini"', '--input="%s"' % inputFile, '--output="%s"' % outputFolder, '--name="%s"' % name, '--profile="motorcar"']
+args1 = ['monav-preprocessor', '-di', '-dro="car"', '-da=unicode_tournament_trie', '-t=%d' % THREADS, '--verbose', '--settings="base.ini"', '--input="%s"' % inputFile, '--output="%s"' % outputFolder, '--name="%s"' % name, '--profile="motorcar"']
 # second pass - generate bike routing data
-args2 = ['monav-preprocessor', '-dro="bike"', '-t=4', '--verbose', '--settings="base.ini"', '--input="%s"' % inputFile, '--output="%s"' % outputFolder, '--name="%s"' % name, '--profile="bicycle"']
+args2 = ['monav-preprocessor', '-dro="bike"', '-t=%d' % THREADS, '--verbose', '--settings="base.ini"', '--input="%s"' % inputFile, '--output="%s"' % outputFolder, '--name="%s"' % name, '--profile="bicycle"']
 # third pass - process pedestrian routing data & delete temporary files
-args3 = ['monav-preprocessor', '-dro="pedestrian"', '-t=4', '--verbose', '--settings="base.ini"', '--input="%s"' % inputFile, '--output="%s"' % outputFolder, '--name="%s"' % name, '--profile="foot"', '-dd']
+args3 = ['monav-preprocessor', '-dro="pedestrian"', '-t=%d' % THREADS, '--verbose', '--settings="base.ini"', '--input="%s"' % inputFile, '--output="%s"' % outputFolder, '--name="%s"' % name, '--profile="foot"', '-dd']
 
 # convert the arguments to whitespace delimited strings and run them
 os.system(reduce(lambda x, y: x+" "+y, args1))
