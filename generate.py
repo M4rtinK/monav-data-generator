@@ -4,6 +4,8 @@
 import sys
 import subprocess
 import os
+import zipfile
+import shutil
 
 THREADS=4
 
@@ -17,12 +19,17 @@ _currentFolder = os.path.dirname(os.path.abspath(__file__))
 
 # create the output folder if it doesn't exist
 if not os.path.exists(outputFolder):
-	os.mkdir(outputFolder)
+  os.mkdir(outputFolder)
 
-# args = ['monav-preprocessor', '-s=settings.ini', '-i=%s' % inputFile, '-o=%s' % outputName, '-n=%s' % outputName, '-pi=OSM Importer', '-pro="Contraction Hierarchies"', '-pg="GPS Grid"', '-pre="OSM Renderer"', '-pa="Unicode Tournament Trie"', '-di', '-dro=Motorcar', '-dre=Online', '-da=Normal', '-dc', '-dd', '-v']
 
-# args = ['monav-preprocessor', '-s=settings.ini', '-i=%s' % inputFile, '-o=%s' % outputName, '-n=%s' % outputName, '-pi=OSM Importer', '-pro=Contraction Hierarchies', '-pg=GPS Grid', '-pre=OSM Renderer', '-pa=Unicode Tournament Trie', '-di', '-d  ro=Motorcar', '-dre=Online', '-da=Normal', '-dc', '-dd', '-v']
 
+
+def zipdir(path, zipFilename):
+  zip = zipfile.ZipFile(zipFilename, 'w', zipfile.ZIP_DEFLATED)
+  for root, dirs, files in os.walk(path):
+    for file in files:
+      zip.write(os.path.join(root, file))
+  zip.close()
 
 # create car, bike and foot routing data
 
@@ -37,4 +44,10 @@ args3 = ['monav-preprocessor', '-dro="pedestrian"', '-t=%d' % THREADS, '--verbos
 os.system(reduce(lambda x, y: x+" "+y, args1))
 os.system(reduce(lambda x, y: x+" "+y, args2))
 os.system(reduce(lambda x, y: x+" "+y, args3))
-print('Monav data processing done')
+print('data processing done')
+
+# compress the results
+print('compresing routing data')
+zipdir(outputFolder, "%s.zip" % outputFolder)
+shutil.rmtree(outputFolder)
+print('data compression done')
