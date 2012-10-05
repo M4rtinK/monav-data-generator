@@ -9,9 +9,14 @@ import shutil
 
 THREADS=4
 
+if len(sys.argv) < 2:
+  print('Error: not enough arguments')
+  print('Usage: ./generate.py osm_data_file output_folder_name')
+  exit(1)
+
 inputFile = sys.argv[1]
 outputFolder = sys.argv[2]
-name = sys.argv[3]
+name = outputFolder
 
 
 # get current folder
@@ -20,9 +25,6 @@ _currentFolder = os.path.dirname(os.path.abspath(__file__))
 # create the output folder if it doesn't exist
 if not os.path.exists(outputFolder):
   os.mkdir(outputFolder)
-
-
-
 
 def zipdir(path, zipFilename):
   zip = zipfile.ZipFile(zipFilename, 'w', zipfile.ZIP_DEFLATED)
@@ -46,8 +48,8 @@ os.system(reduce(lambda x, y: x+" "+y, args2))
 os.system(reduce(lambda x, y: x+" "+y, args3))
 print('data processing done')
 
-# compress the results
-print('compresing routing data')
-zipdir(outputFolder, "%s.zip" % outputFolder)
-shutil.rmtree(outputFolder)
-print('data compression done')
+## compress the results
+#print('compresing routing data')
+#zipdir(outputFolder, "%s.zip" % outputFolder)
+#shutil.rmtree(outputFolder)
+#print('data compression done')
