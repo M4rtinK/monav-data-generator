@@ -39,17 +39,17 @@ def zipdir(path, zipFilename):
 args1 = ['monav-preprocessor', '-di', '-dro="car"', '-t=%d' % THREADS, '--verbose', '--settings="base.ini"',
          '--input="%s"' % inputFile, '--output="%s"' % outputFolder, '--name="%s"' % name, '--profile="motorcar"']
 # second pass - generate bike routing data
-args2 = ['monav-preprocessor', '-dro="bike"', '-t=%d' % THREADS, '--verbose', '--settings="base.ini"',
+args2 = ['monav-preprocessor', '-di', '-dro="bike"', '-t=%d' % THREADS, '--verbose', '--settings="base.ini"',
          '--input="%s"' % inputFile, '--output="%s"' % outputFolder, '--name="%s"' % name, '--profile="bicycle"']
 # third pass - process pedestrian routing data & delete temporary files
-args3 = ['monav-preprocessor', '-dro="pedestrian"', '-t=%d' % THREADS, '--verbose', '--settings="base.ini"',
+args3 = ['monav-preprocessor', '-di', '-dro="pedestrian"', '-t=%d' % THREADS, '--verbose', '--settings="base.ini"',
          '--input="%s"' % inputFile, '--output="%s"' % outputFolder, '--name="%s"' % name, '--profile="foot"', '-dd']
 
 # convert the arguments to whitespace delimited strings and run them
-os.system(reduce(lambda x, y: x + " " + y, args1))
-os.system(reduce(lambda x, y: x + " " + y, args2))
-os.system(reduce(lambda x, y: x + " " + y, args3))
-print('data processing done')
+subprocess.call(reduce(lambda x, y: x + " " + y, args1), shell=True)
+subprocess.call(reduce(lambda x, y: x + " " + y, args2), shell=True)
+subprocess.call(reduce(lambda x, y: x + " " + y, args3), shell=True)
+print('## data processing done ##')
 
 ## compress the results
 #print('compresing routing data')
