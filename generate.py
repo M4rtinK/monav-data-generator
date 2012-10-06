@@ -11,11 +11,21 @@ THREADS = 4
 
 if len(sys.argv) < 2:
   print('Error: not enough arguments')
-  print('Usage: ./generate.py osm_data_file output_folder_name')
+  print('Usage: ./generate.py osm_data_file [output_folder_name]')
   exit(1)
 
 inputFile = sys.argv[1]
-outputFolder = sys.argv[2]
+
+# if no output folder name is provided, use the filename
+# without extension
+if len(sys.argv) == 2:
+  outputFolder = os.path.splitext(os.path.basename(inputFile))[0]
+  print('## no output folder name provided ##')
+  print('## using input filename (without extension) as output folder name: ##')
+  print('## %s ##' % outputFolder)
+else:
+  outputFolder = sys.argv[2]
+
 name = outputFolder
 
 
