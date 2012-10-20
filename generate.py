@@ -48,10 +48,10 @@ def zipdir(path, zipFilename):
 # first pass - import data, create address info & generate car routing data
 args1 = ['monav-preprocessor', '-di', '-dro="car"', '-t=%d' % THREADS, '--verbose', '--settings="base.ini"',
          '--input="%s"' % inputFile, '--output="%s"' % outputFolder, '--name="%s"' % name, '--profile="motorcar"']
-# second pass - generate bike routing data
+# second pass - import data, generate bike routing data
 args2 = ['monav-preprocessor', '-di', '-dro="bike"', '-t=%d' % THREADS, '--verbose', '--settings="base.ini"',
          '--input="%s"' % inputFile, '--output="%s"' % outputFolder, '--name="%s"' % name, '--profile="bicycle"']
-# third pass - process pedestrian routing data & delete temporary files
+# third pass - import data, process pedestrian routing data & delete temporary files
 args3 = ['monav-preprocessor', '-di', '-dro="pedestrian"', '-t=%d' % THREADS, '--verbose', '--settings="base.ini"',
          '--input="%s"' % inputFile, '--output="%s"' % outputFolder, '--name="%s"' % name, '--profile="foot"', '-dd']
 
@@ -62,7 +62,7 @@ subprocess.call(reduce(lambda x, y: x + " " + y, args3), shell=True)
 print('## data processing done ##')
 
 ## compress the results
-#print('compresing routing data')
+#print('compressing routing data')
 #zipdir(outputFolder, "%s.zip" % outputFolder)
 #shutil.rmtree(outputFolder)
 #print('data compression done')
